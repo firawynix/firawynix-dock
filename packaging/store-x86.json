@@ -1,0 +1,15 @@
+{
+  "storeIdentityName": "Firawynix.FirawynixDock",
+  "applicationId": "FirawynixDock",
+  "displayName": "Firawynix Dock",
+  "publisherDisplayName": "Firawynix",
+  "description": "Acesso rápido aos aplicativos do Firawynix Center pela barra de tarefas",
+  "version": "1.0.0.0",
+  "architecture": "x86",
+  "payloadFiles": [
+    { "source": "../dist/win-x86/FirawynixDock.exe", "destination": "FirawynixDock.exe" },
+    { "source": "../dist/win-x86/catalogo-snapshot.json", "destination": "catalogo-snapshot.json" }
+  ],
+  "executable": "FirawynixDock.exe",
+  "icon": "../icon-transparent.png"
+}

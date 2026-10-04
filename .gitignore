@@ -1,0 +1,17 @@
+bin/
+obj/
+dist/
+.vs/
+*.user
+*.suo
+*.pdb
+verification.json
+images-verification.json
+placement-verification.json
+preview.png
+preview-bottom.png
+
+# Anotações e caminhos locais da fase de teste/publicação
+PLANO_DOMINGO.md
+TESTE_INICIAL.md
+PUBLICACAO_STORE.md

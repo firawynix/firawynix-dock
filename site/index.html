@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07151d">
+  <meta name="description" content="Firawynix Dock: seus programas Firawynix em um painel ciano acima da barra de tarefas do Windows.">
+  <title>Firawynix Dock — tudo a um clique</title>
+  <link rel="icon" type="image/png" href="assets/dock-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-glow" aria-hidden="true"></div>
+  <header class="topbar wrap">
+    <a class="brand" href="#inicio" aria-label="Firawynix Dock, início">
+      <img src="assets/dock-icon.png" alt="" width="40" height="40">
+      <span>FIRAWYNIX <b>/ DOCK</b></span>
+    </a>
+    <nav class="topnav" aria-label="Navegação principal">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#captura">Visual</a>
+    </nav>
+    <span class="top-cta">Store em certificação</span>
+  </header>
+
+  <main>
+    <section class="hero wrap" id="inicio">
+      <div class="hero-copy">
+        <span class="eyebrow"><i></i> UM LUGAR PARA TUDO DA FIRAWYNIX</span>
+        <h1>Seus apps a <em>um clique</em> da barra de tarefas.</h1>
+        <p>Jogos, ferramentas e projetos do Firawynix Center em um painel flutuante. Fixe o Dock na barra de tarefas e abra o que precisa sem procurar pelo computador.</p>
+        <div class="hero-actions">
+          <span class="button primary" role="status">Em certificação na Store</span>
+          <a class="button secondary" href="#como-funciona">Conhecer o Dock <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-meta"><span>Windows 10 e 11</span><span>•</span><span>Gratuito</span><span>•</span><span>x64 e x86</span></div>
+      </div>
+      <div class="hero-stage" aria-label="Demonstração visual do Firawynix Dock">
+        <div class="stage-orbit orbit-one"></div><div class="stage-orbit orbit-two"></div>
+        <div class="stage-label">PAINEL FLUTUANTE <span>01 / 03</span></div>
+        <div class="demo-dock" id="demoDock">
+          <div class="demo-top"><strong>FIRAWYNIX <span>/</span> DOCK</strong><span class="demo-controls" aria-hidden="true">⚙　↻　×</span></div>
+          <label class="demo-search-label" for="demoSearch">BUSCAR</label>
+          <input id="demoSearch" class="demo-search" type="search" autocomplete="off" placeholder="Pesquisar programas" aria-label="Pesquisar programas na demonstração">
+          <div class="demo-grid" id="demoGrid">
+            <article class="demo-card" data-name="Aion H4K"><img src="assets/items/aion.png" alt=""><strong>Aion H4K</strong><small>INSTALADO</small></article>
+            <article class="demo-card" data-name="Firawynix MU"><img src="assets/items/mu.png" alt=""><strong>Firawynix MU</strong><small>INSTALADO</small></article>
+            <article class="demo-card" data-name="Minigolf"><img src="assets/items/minigolf.png" alt=""><strong>Minigolf</strong><small>SITE</small></article>
+            <article class="demo-card" data-name="Tibia Global"><img src="assets/items/tibia.png" alt=""><strong>Tibia Global</strong><small>INSTALADO</small></article>
+            <article class="demo-card" data-name="ERP + Caixa"><img src="assets/items/erp.png" alt=""><strong>ERP + Caixa</strong><small>SITE</small></article>
+            <article class="demo-card" data-name="Service Desk"><img src="assets/items/service-desk.png" alt=""><strong>Service Desk</strong><small>SITE</small></article>
+          </div>
+          <p id="demoEmpty" class="demo-empty" hidden>Nenhum item encontrado.</p>
+        </div>
+        <div class="taskbar-demo" aria-hidden="true"><span class="taskbar-dot"></span><span class="taskbar-icon"><img src="assets/dock-icon.png" alt=""></span><span class="taskbar-dot"></span><span class="taskbar-dot"></span></div>
+      </div>
+    </section>
+
+    <section class="how-section" id="como-funciona">
+      <div class="wrap">
+        <div class="section-heading"><span class="eyebrow">SIMPLES DESDE O PRIMEIRO CLIQUE</span><h2>O Center continua sendo o centro.<br><em>O Dock deixa tudo à mão.</em></h2></div>
+        <div class="steps">
+          <article><span class="step-number">01</span><h3>Fixe na barra</h3><p>Deixe o ícone do Firawynix Dock onde preferir na barra de tarefas do Windows.</p></article>
+          <article><span class="step-number">02</span><h3>Abra o painel</h3><p>Um clique mostra os programas logo acima do ícone, na posição em que ele estiver.</p></article>
+          <article><span class="step-number">03</span><h3>Escolha e siga</h3><p>Veja o que está instalado, procure pelo nome e abra o programa ou site desejado.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="features wrap" id="recursos">
+      <div class="section-heading"><span class="eyebrow">DO SEU JEITO</span><h2>Discreto quando precisa.<br><em>Pronto quando você chama.</em></h2></div>
+      <div class="feature-grid">
+        <article class="feature-card feature-wide"><div class="feature-icon">◫</div><h3>Integrado ao Firawynix Center</h3><p>O Dock lê o catálogo e reconhece os programas instalados. Novos itens aparecem após a atualização do catálogo, sem alterar os arquivos do Center.</p><span>CATÁLOGO + INSTALAÇÕES</span></article>
+        <article class="feature-card"><div class="feature-icon">◌</div><h3>Transparência ajustável</h3><p>Escolha de 0% a 100% para o fundo. Ícones, nomes e cartões continuam legíveis.</p><div class="slider-wrap"><label for="transparency">Testar transparência <output id="transparencyValue">25%</output></label><input id="transparency" type="range" min="0" max="100" value="25"></div></article>
+        <article class="feature-card"><div class="feature-icon">⌕</div><h3>Busca rápida</h3><p>Digite um nome na demonstração acima para filtrar os cartões instantaneamente.</p></article>
+        <article class="feature-card"><div class="feature-icon">⋯</div><h3>Visual limpo</h3><p>Oculte moldura, pesquisa ou menus. O botão direito mantém o acesso às configurações.</p></article>
+        <article class="feature-card"><div class="feature-icon">↘</div><h3>Fecha sozinho</h3><p>Ao clicar fora ou deixar de usar o painel, ele sai do caminho automaticamente.</p></article>
+      </div>
+    </section>
+
+    <section class="capture-section" id="captura">
+      <div class="wrap capture-layout">
+        <div class="capture-copy"><span class="eyebrow">VISUAL REAL DO APLICATIVO</span><h2>Um painel compacto, sem tomar a tela.</h2><p>A captura mostra o Dock em execução com os cartões do catálogo. As imagens e o estado de instalação vêm do aplicativo no computador.</p><span class="text-link">Download na Store após a aprovação</span></div>
+        <figure class="capture-frame"><img src="assets/dock-preview.png" alt="Captura real do Firawynix Dock com cartões de Aion H4K, Firawynix MU, Minigolf e outros projetos."><figcaption>Captura do aplicativo no Windows</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="faq wrap" id="perguntas"><div class="section-heading"><span class="eyebrow">PERGUNTAS RÁPIDAS</span><h2>O essencial, sem complicação.</h2></div><div class="faq-list"><details><summary>Preciso alterar o Firawynix Center?</summary><p>Não. O Dock lê o catálogo e as informações de instalação do Center, mas não modifica seus arquivos.</p></details><details><summary>Um programa novo aparece automaticamente?</summary><p>Depois que o catálogo do Center for atualizado, use a opção de atualizar do Dock. Ele verifica novamente os itens e as instalações.</p></details><details><summary>Posso esconder todos os controles?</summary><p>Sim. Você pode ocultar moldura, busca e menus. O botão direito abre as configurações para reativá-los.</p></details></div></section>
+  </main>
+
+  <footer class="fw-footer" aria-label="Links do Firawynix Dock"><div class="fw-footer-inner"><a class="fw-footer-brand" href="#inicio">Firawynix Dock</a><span class="fw-footer-credit">Feito por Firawynix · 2026</span><nav class="fw-footer-links" aria-label="Links do projeto"><span class="fw-footer-store">⊞ Store em certificação</span><a href="https://github.com/firawynix" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://firawynix.com.br/" target="_blank" rel="noopener noreferrer">Portfólio ↗</a><a class="fw-footer-support" href="https://firawynix.com.br/apoie?de=firawynix-dock" target="_blank" rel="noopener noreferrer">♥ Apoiar</a></nav></div></footer>
+  <script src="script.js" defer></script>
+</body>
+</html>
