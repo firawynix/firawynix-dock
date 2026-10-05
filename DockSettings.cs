@@ -13,6 +13,7 @@ internal sealed class DockSettings
     public bool HideOuterFrame { get; set; }
     public bool HideSearch { get; set; }
     public bool HideMenus { get; set; }
+    public bool OnlyInstalled { get; set; } = true;
 
     public void DisableSaving() => saveDisabled = true;
 

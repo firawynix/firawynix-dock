@@ -5,7 +5,7 @@
 #endif
 
 #define DockName "Firawynix Dock"
-#define DockVersion "1.0.0"
+#define DockVersion "1.1.0"
 #define DockAppId "{{887A8A7A-D695-43E4-8B76-DEA0E1F67EA2}"
 
 #if CenterArch == "x64"
@@ -23,7 +23,7 @@ AppId={#DockAppId}
 AppName={#DockName}
 AppVersion={#DockVersion}
 AppVerName={#DockName} {#DockVersion}
-VersionInfoVersion=1.0.0.0
+VersionInfoVersion=1.1.0.0
 AppPublisher=Firawynix
 AppPublisherURL=https://lab.firawynix.com.br/dock/
 AppSupportURL=https://lab.firawynix.com.br/dock/
@@ -69,3 +69,6 @@ Name: "{autodesktop}\Firawynix Dock"; Filename: "{app}\FirawynixDock.exe"; Tasks
 
 [Tasks]
 Name: "desktopicon"; Description: "Criar atalho na área de trabalho"; GroupDescription: "Atalhos adicionais:"; Flags: unchecked
+
+[Run]
+Filename: "{app}\FirawynixDock.exe"; Description: "Fixar o Firawynix Dock na barra de tarefas"; Flags: nowait

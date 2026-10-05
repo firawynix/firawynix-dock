@@ -14,6 +14,7 @@ internal sealed class DockForm : Form
     private readonly TextBox search;
     private readonly Label heading;
     private readonly Label searchLabel;
+    private readonly Button installedButton;
     private readonly Button settingsButton;
     private readonly Button refreshButton;
     private readonly Button closeButton;
@@ -86,6 +87,19 @@ internal sealed class DockForm : Form
         };
         Controls.Add(searchLabel);
 
+        installedButton = new Button
+        {
+            Location = new Point(320, 57), Size = new Size(148, 20),
+            FlatStyle = FlatStyle.Flat, BackColor = Color.FromArgb(13, 77, 91),
+            ForeColor = Color.FromArgb(144, 244, 221),
+            Font = new Font("Segoe UI", 7.5f, FontStyle.Bold),
+            Cursor = Cursors.Hand
+        };
+        installedButton.FlatAppearance.BorderSize = 0;
+        installedButton.Click += (_, _) => ToggleInstalledOnly();
+        tips.SetToolTip(installedButton, "Alternar entre todos os itens e apenas programas instalados");
+        Controls.Add(installedButton);
+
         search = new TextBox
         {
             PlaceholderText = "Buscar programas, jogos e sites",
@@ -131,7 +145,7 @@ internal sealed class DockForm : Form
         ConfigureMenuLifetime(settingsMenu);
         ContextMenuStrip = settingsMenu;
         foreach (var control in new Control[]
-                 { heading, settingsButton, refreshButton, closeButton, searchLabel, search,
+                 { heading, settingsButton, refreshButton, closeButton, searchLabel, installedButton, search,
                    viewport, grid, scrollBar })
             control.ContextMenuStrip = settingsMenu;
 
@@ -201,6 +215,10 @@ internal sealed class DockForm : Form
 
     private void AddAppearanceItems(ToolStripItemCollection items)
     {
+        var installed = new ToolStripMenuItem("Mostrar só instalados") { Tag = "installed" };
+        installed.Click += (_, _) => ToggleInstalledOnly();
+        items.Add(installed);
+        items.Add(new ToolStripSeparator());
         var transparency = new ToolStripMenuItem("Transparência do fundo");
         foreach (var percent in TransparencyChoices)
         {
@@ -251,6 +269,7 @@ internal sealed class DockForm : Form
                 "frame" => settings.HideOuterFrame,
                 "search" => settings.HideSearch,
                 "menus" => settings.HideMenus,
+                "installed" => settings.OnlyInstalled,
                 _ => false
             };
             SyncMenuChecks(item.DropDownItems);
@@ -270,6 +289,14 @@ internal sealed class DockForm : Form
         MarkActivity();
     }
 
+    private void ToggleInstalledOnly()
+    {
+        settings.OnlyInstalled = !settings.OnlyInstalled;
+        settings.Save();
+        RenderGrid();
+        MarkActivity();
+    }
+
     private int ContentTop => 18 + (settings.HideMenus ? 0 : 48) +
         (settings.HideSearch ? 0 : 65);
 
@@ -280,8 +307,9 @@ internal sealed class DockForm : Form
     {
         heading.Visible = settingsButton.Visible = refreshButton.Visible = closeButton.Visible =
             !settings.HideMenus;
-        searchLabel.Visible = search.Visible = !settings.HideSearch;
+        searchLabel.Visible = installedButton.Visible = search.Visible = !settings.HideSearch;
         searchLabel.Top = settings.HideMenus ? 16 : 61;
+        installedButton.Top = settings.HideMenus ? 12 : 57;
         search.Top = settings.HideMenus ? 33 : 78;
         if (settings.HideSearch && search.TextLength > 0) search.Clear();
         viewport.Top = scrollBar.Top = ContentTop;
@@ -414,6 +442,7 @@ internal sealed class DockForm : Form
         grid.Controls.Clear();
         var filtered = snapshot.Items
             .Where(x => x.Name.Contains(search.Text, StringComparison.CurrentCultureIgnoreCase))
+            .Where(x => !settings.OnlyInstalled || (x.Type != "web" && x.Target is not null))
             .OrderBy(x => x.Category == "Jogos" ? 0 : 1)
             .ThenBy(x => x.Name)
             .ToList();
@@ -433,6 +462,9 @@ internal sealed class DockForm : Form
         var contentHeight = Math.Max(viewport.Height, rows * 167 + 4);
         grid.Height = contentHeight;
         scrollBar.SetRange(contentHeight, viewport.Height);
+        installedButton.Text = settings.OnlyInstalled ? "✓ SÓ INSTALADOS" : "MOSTRAR TUDO";
+        installedButton.ForeColor = settings.OnlyInstalled
+            ? Color.FromArgb(144, 244, 221) : Color.FromArgb(156, 231, 241);
     }
 
     private void Open(CatalogItem item)

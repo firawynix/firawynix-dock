@@ -61,6 +61,14 @@ internal static class Program
             return;
         }
 
+        if (args.Contains("--check-pin", StringComparer.OrdinalIgnoreCase))
+        {
+            var pinned = TaskbarPinning.IsPinnedAsync().GetAwaiter().GetResult();
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "pin-verification.json"),
+                JsonSerializer.Serialize(new { Pinned = pinned, TaskbarPinning.LastError }, new JsonSerializerOptions { WriteIndented = true }));
+            return;
+        }
+
         if (args.Contains("--check-images", StringComparer.OrdinalIgnoreCase))
         {
             var images = Task.WhenAll(snapshot.Items.Select(x => ImageStore.GetAsync(x.ImageUrl)))
@@ -106,6 +114,8 @@ internal static class Program
         }
 
         ApplicationConfiguration.Initialize();
+        using var pinGate = new PinGateForm();
+        if (pinGate.ShowDialog() != DialogResult.OK) return;
         using var form = new DockForm(snapshot);
         _ = Task.Run(() =>
         {

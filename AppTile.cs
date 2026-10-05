@@ -78,7 +78,7 @@ internal sealed class AppTile : Control
         TextRenderer.DrawText(g, Item.Name, NameFont, nameBounds,
             Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.WordBreak | TextFormatFlags.EndEllipsis);
 
-        var status = Item.Type == "web" ? "SITE" : Item.Target is null ? "NO CENTER" : "INSTALADO";
+        var status = Item.Type == "web" ? "SITE" : Item.Target is null ? "NÃO INSTALADO" : "INSTALADO";
         var statusColor = Item.Type == "web" ? Color.FromArgb(156, 231, 241) :
             Item.Target is null ? Color.FromArgb(244, 202, 130) : Color.FromArgb(128, 244, 213);
         TextRenderer.DrawText(g, status, StatusFont,
