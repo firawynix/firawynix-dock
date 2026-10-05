@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="620" viewBox="0 0 1920 620">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06131f"/><stop offset=".6" stop-color="#0a3341"/><stop offset="1" stop-color="#0b5664"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#1be3f1" stop-opacity=".36"/><stop offset="1" stop-color="#1be3f1" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1920" height="620" fill="url(#bg)"/>
+  <circle cx="1514" cy="169" r="520" fill="url(#glow)"/>
+  <circle cx="270" cy="590" r="370" fill="url(#glow)" opacity=".45"/>
+  <g transform="translate(120 75) scale(.30)">
+    <path d="M36 50 111 128 36 206M66 224h73" fill="none" stroke="#55eaf5" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M153 61c0-11 12-18 22-12l64 49c9 7 9 19 0 26l-64 49c-10 7-22 0-22-12Z" fill="#55eaf5"/>
+  </g>
+  <text x="218" y="140" fill="#e8fdff" font-family="Segoe UI,Arial,sans-serif" font-size="34" font-weight="700" letter-spacing="5">FIRAWYNIX</text>
+  <text x="118" y="294" fill="#ffffff" font-family="Segoe UI,Arial,sans-serif" font-size="112" font-weight="800" letter-spacing="8">DOCK</text>
+  <text x="123" y="365" fill="#a9edf4" font-family="Segoe UI,Arial,sans-serif" font-size="40" font-weight="600">Tudo da Firawynix perto de você.</text>
+  <text x="124" y="420" fill="#d7f4f7" font-family="Segoe UI,Arial,sans-serif" font-size="24">Jogos, programas e sites em um painel na barra de tarefas.</text>
+  <rect x="122" y="477" width="366" height="64" rx="18" fill="#13bad3"/>
+  <text x="305" y="518" fill="#07232d" font-family="Segoe UI,Arial,sans-serif" font-size="23" font-weight="800" text-anchor="middle">UM CLIQUE. SEUS APPS.</text>
+  <g transform="translate(1064 77)">
+    <rect width="702" height="466" rx="34" fill="#05232e" fill-opacity=".9" stroke="#55deeb" stroke-width="4"/>
+    <text x="37" y="57" fill="#edfdff" font-family="Segoe UI,Arial,sans-serif" font-size="27" font-weight="700">FIRAWYNIX / DOCK</text>
+    <rect x="37" y="82" width="628" height="38" rx="6" fill="#125163" stroke="#347f8e"/>
+    <g fill="#104657" stroke="#3194a6" stroke-width="2">
+      <rect x="37" y="149" width="190" height="126" rx="21"/><rect x="255" y="149" width="190" height="126" rx="21"/><rect x="473" y="149" width="190" height="126" rx="21"/>
+      <rect x="37" y="292" width="190" height="126" rx="21"/><rect x="255" y="292" width="190" height="126" rx="21"/><rect x="473" y="292" width="190" height="126" rx="21"/>
+    </g>
+    <g fill="none" stroke="#55eaf5" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m104 175 28 26-28 27m15 9h39"/><circle cx="350" cy="204" r="30"/><path d="M335 204h30m-15-15v30"/>
+      <rect x="544" y="177" width="50" height="50" rx="9"/><path d="m554 212 10-16 9 9 10-15 11 23"/>
+      <path d="M105 321v40m0-40 26 13-26 13"/><path d="M320 350h14l10-21 12 37 10-17h16"/>
+      <rect x="540" y="320" width="60" height="42" rx="7"/><path d="M554 376h32"/>
+    </g>
+    <g fill="#effdff" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="700" text-anchor="middle">
+      <text x="132" y="257">Jogos</text><text x="350" y="257">Projetos</text><text x="568" y="257">Ferramentas</text>
+      <text x="132" y="402">Instalados</text><text x="350" y="402">Seu Center</text><text x="568" y="402">Sites</text>
+    </g>
+  </g>
+</svg>
