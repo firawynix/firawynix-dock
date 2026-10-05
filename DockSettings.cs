@@ -13,7 +13,8 @@ internal sealed class DockSettings
     public bool HideOuterFrame { get; set; }
     public bool HideSearch { get; set; }
     public bool HideMenus { get; set; }
-    public bool OnlyInstalled { get; set; } = true;
+    public bool HideSites { get; set; } = true;
+    public bool HideNotInstalled { get; set; } = true;
 
     public void DisableSaving() => saveDisabled = true;
 
@@ -23,9 +24,20 @@ internal sealed class DockSettings
         {
             if (File.Exists(Path))
             {
-                var loaded = JsonSerializer.Deserialize<DockSettings>(File.ReadAllText(Path));
+                var json = File.ReadAllText(Path);
+                var loaded = JsonSerializer.Deserialize<DockSettings>(json);
                 if (loaded is not null)
                 {
+                    using var document = JsonDocument.Parse(json);
+                    var root = document.RootElement;
+                    if (!root.TryGetProperty(nameof(HideSites), out _) &&
+                        !root.TryGetProperty(nameof(HideNotInstalled), out _) &&
+                        root.TryGetProperty("OnlyInstalled", out var oldFilter) &&
+                        oldFilter.ValueKind is JsonValueKind.True or JsonValueKind.False)
+                    {
+                        loaded.HideSites = oldFilter.GetBoolean();
+                        loaded.HideNotInstalled = oldFilter.GetBoolean();
+                    }
                     loaded.TransparencyPercent = Math.Clamp(loaded.TransparencyPercent, 0, 100);
                     return loaded;
                 }

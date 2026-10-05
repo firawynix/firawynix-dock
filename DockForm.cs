@@ -14,7 +14,8 @@ internal sealed class DockForm : Form
     private readonly TextBox search;
     private readonly Label heading;
     private readonly Label searchLabel;
-    private readonly Button installedButton;
+    private readonly Button sitesButton;
+    private readonly Button notInstalledButton;
     private readonly Button settingsButton;
     private readonly Button refreshButton;
     private readonly Button closeButton;
@@ -27,6 +28,7 @@ internal sealed class DockForm : Form
     private readonly SemaphoreSlim refreshGate = new(1);
     private bool exiting;
     private bool menuOpen;
+    private bool checkingPin;
     private readonly bool previewMode;
     private DateTime suppressHideUntil;
     private DateTime lastActivityUtc;
@@ -87,18 +89,31 @@ internal sealed class DockForm : Form
         };
         Controls.Add(searchLabel);
 
-        installedButton = new Button
+        sitesButton = new Button
         {
-            Location = new Point(320, 57), Size = new Size(148, 20),
+            Location = new Point(201, 57), Size = new Size(119, 20),
             FlatStyle = FlatStyle.Flat, BackColor = Color.FromArgb(13, 77, 91),
             ForeColor = Color.FromArgb(144, 244, 221),
             Font = new Font("Segoe UI", 7.5f, FontStyle.Bold),
             Cursor = Cursors.Hand
         };
-        installedButton.FlatAppearance.BorderSize = 0;
-        installedButton.Click += (_, _) => ToggleInstalledOnly();
-        tips.SetToolTip(installedButton, "Alternar entre todos os itens e apenas programas instalados");
-        Controls.Add(installedButton);
+        sitesButton.FlatAppearance.BorderSize = 0;
+        sitesButton.Click += (_, _) => ToggleFilter("sites");
+        tips.SetToolTip(sitesButton, "Ocultar ou mostrar sites");
+        Controls.Add(sitesButton);
+
+        notInstalledButton = new Button
+        {
+            Location = new Point(325, 57), Size = new Size(143, 20),
+            FlatStyle = FlatStyle.Flat, BackColor = Color.FromArgb(13, 77, 91),
+            ForeColor = Color.FromArgb(144, 244, 221),
+            Font = new Font("Segoe UI", 7.5f, FontStyle.Bold),
+            Cursor = Cursors.Hand
+        };
+        notInstalledButton.FlatAppearance.BorderSize = 0;
+        notInstalledButton.Click += (_, _) => ToggleFilter("notInstalled");
+        tips.SetToolTip(notInstalledButton, "Ocultar ou mostrar programas não instalados");
+        Controls.Add(notInstalledButton);
 
         search = new TextBox
         {
@@ -145,12 +160,12 @@ internal sealed class DockForm : Form
         ConfigureMenuLifetime(settingsMenu);
         ContextMenuStrip = settingsMenu;
         foreach (var control in new Control[]
-                 { heading, settingsButton, refreshButton, closeButton, searchLabel, installedButton, search,
+                 { heading, settingsButton, refreshButton, closeButton, searchLabel, sitesButton, notInstalledButton, search,
                    viewport, grid, scrollBar })
             control.ContextMenuStrip = settingsMenu;
 
         var menu = new ContextMenuStrip();
-        menu.Items.Add("Abrir dock", null, (_, _) => ShowDock());
+        menu.Items.Add("Abrir dock", null, async (_, _) => await ShowDockAsync());
         menu.Items.Add("Atualizar", null, async (_, _) => await RefreshAsync());
         var appearance = new ToolStripMenuItem("Aparência");
         AddAppearanceItems(appearance.DropDownItems);
@@ -215,9 +230,15 @@ internal sealed class DockForm : Form
 
     private void AddAppearanceItems(ToolStripItemCollection items)
     {
-        var installed = new ToolStripMenuItem("Mostrar só instalados") { Tag = "installed" };
+        var installed = new ToolStripMenuItem("Só instalados") { Tag = "installed" };
         installed.Click += (_, _) => ToggleInstalledOnly();
         items.Add(installed);
+        var sites = new ToolStripMenuItem("Ocultar sites") { Tag = "sites" };
+        sites.Click += (_, _) => ToggleFilter("sites");
+        items.Add(sites);
+        var notInstalled = new ToolStripMenuItem("Ocultar não instalados") { Tag = "notInstalled" };
+        notInstalled.Click += (_, _) => ToggleFilter("notInstalled");
+        items.Add(notInstalled);
         items.Add(new ToolStripSeparator());
         var transparency = new ToolStripMenuItem("Transparência do fundo");
         foreach (var percent in TransparencyChoices)
@@ -269,7 +290,9 @@ internal sealed class DockForm : Form
                 "frame" => settings.HideOuterFrame,
                 "search" => settings.HideSearch,
                 "menus" => settings.HideMenus,
-                "installed" => settings.OnlyInstalled,
+                "installed" => settings.HideSites && settings.HideNotInstalled,
+                "sites" => settings.HideSites,
+                "notInstalled" => settings.HideNotInstalled,
                 _ => false
             };
             SyncMenuChecks(item.DropDownItems);
@@ -291,7 +314,18 @@ internal sealed class DockForm : Form
 
     private void ToggleInstalledOnly()
     {
-        settings.OnlyInstalled = !settings.OnlyInstalled;
+        var onlyInstalled = !(settings.HideSites && settings.HideNotInstalled);
+        settings.HideSites = onlyInstalled;
+        settings.HideNotInstalled = onlyInstalled;
+        settings.Save();
+        RenderGrid();
+        MarkActivity();
+    }
+
+    private void ToggleFilter(string filter)
+    {
+        if (filter == "sites") settings.HideSites = !settings.HideSites;
+        else if (filter == "notInstalled") settings.HideNotInstalled = !settings.HideNotInstalled;
         settings.Save();
         RenderGrid();
         MarkActivity();
@@ -307,9 +341,9 @@ internal sealed class DockForm : Form
     {
         heading.Visible = settingsButton.Visible = refreshButton.Visible = closeButton.Visible =
             !settings.HideMenus;
-        searchLabel.Visible = installedButton.Visible = search.Visible = !settings.HideSearch;
+        searchLabel.Visible = sitesButton.Visible = notInstalledButton.Visible = search.Visible = !settings.HideSearch;
         searchLabel.Top = settings.HideMenus ? 16 : 61;
-        installedButton.Top = settings.HideMenus ? 12 : 57;
+        sitesButton.Top = notInstalledButton.Top = settings.HideMenus ? 12 : 57;
         search.Top = settings.HideMenus ? 33 : 78;
         if (settings.HideSearch && search.TextLength > 0) search.Clear();
         viewport.Top = scrollBar.Top = ContentTop;
@@ -339,7 +373,7 @@ internal sealed class DockForm : Form
 
     public void Toggle()
     {
-        if (Visible) Hide(); else ShowDock();
+        if (Visible) Hide(); else _ = ShowDockAsync();
     }
 
     public void ExitForPreview()
@@ -385,8 +419,20 @@ internal sealed class DockForm : Form
         return button;
     }
 
-    private void ShowDock()
+    private async Task ShowDockAsync()
     {
+        if (checkingPin || IsDisposed) return;
+        checkingPin = true;
+        try
+        {
+            if (!previewMode && await TaskbarPinning.IsPinnedAsync() != true)
+            {
+                using var gate = new PinGateForm();
+                if (gate.ShowDialog(this) != DialogResult.OK) return;
+            }
+        }
+        finally { checkingPin = false; }
+        if (IsDisposed) return;
         snapshot = Catalog.LoadLocal();
         RenderGrid();
         MarkActivity();
@@ -442,7 +488,8 @@ internal sealed class DockForm : Form
         grid.Controls.Clear();
         var filtered = snapshot.Items
             .Where(x => x.Name.Contains(search.Text, StringComparison.CurrentCultureIgnoreCase))
-            .Where(x => !settings.OnlyInstalled || (x.Type != "web" && x.Target is not null))
+            .Where(x => !settings.HideSites || x.Type != "web")
+            .Where(x => !settings.HideNotInstalled || x.Type == "web" || x.Target is not null)
             .OrderBy(x => x.Category == "Jogos" ? 0 : 1)
             .ThenBy(x => x.Name)
             .ToList();
@@ -462,9 +509,10 @@ internal sealed class DockForm : Form
         var contentHeight = Math.Max(viewport.Height, rows * 167 + 4);
         grid.Height = contentHeight;
         scrollBar.SetRange(contentHeight, viewport.Height);
-        installedButton.Text = settings.OnlyInstalled ? "✓ SÓ INSTALADOS" : "MOSTRAR TUDO";
-        installedButton.ForeColor = settings.OnlyInstalled
-            ? Color.FromArgb(144, 244, 221) : Color.FromArgb(156, 231, 241);
+        sitesButton.Text = settings.HideSites ? "✓ SITES OCULTOS" : "MOSTRAR SITES";
+        notInstalledButton.Text = settings.HideNotInstalled ? "✓ NÃO INST. OCULTOS" : "MOSTRAR NÃO INST.";
+        sitesButton.ForeColor = settings.HideSites ? Color.FromArgb(144, 244, 221) : Color.FromArgb(156, 231, 241);
+        notInstalledButton.ForeColor = settings.HideNotInstalled ? Color.FromArgb(144, 244, 221) : Color.FromArgb(156, 231, 241);
     }
 
     private void Open(CatalogItem item)

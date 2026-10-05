@@ -4,7 +4,7 @@
   "displayName": "Firawynix Dock",
   "publisherDisplayName": "Firawynix",
   "description": "Acesso rápido aos aplicativos do Firawynix Center pela barra de tarefas",
-  "version": "1.1.0.0",
+  "version": "1.1.1.0",
   "architecture": "x64",
   "payloadFiles": [
     { "source": "../dist/win-x64/FirawynixDock.exe", "destination": "FirawynixDock.exe" },

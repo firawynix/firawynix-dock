@@ -35,7 +35,7 @@ internal sealed class PinGateForm : Form
         };
         Controls.Add(message);
 
-        pinButton = MakeButton("Fixar na barra", 25, 174, 165);
+        pinButton = MakeButton("Solicitar fixação", 25, 174, 165);
         pinButton.Click += async (_, _) => await RequestPinAsync();
         Controls.Add(pinButton);
 
@@ -73,17 +73,10 @@ internal sealed class PinGateForm : Form
             var pinned = await TaskbarPinning.IsPinnedAsync();
             if (IsDisposed) return;
             if (pinned == true) { DialogResult = DialogResult.OK; return; }
-            if (pinned is null)
-            {
-                if (manualConfirmation) { DialogResult = DialogResult.OK; return; }
-                message.Text = "O Windows não conseguiu informar se o Dock está fixado. Clique com o botão direito no atalho do Dock e escolha ‘Fixar na barra de tarefas’. Depois confirme abaixo.";
-                verifyButton.Text = "Já fixei · continuar";
-            }
-            else
-            {
-                message.Text = "O Dock ainda não está fixado. Clique em ‘Fixar na barra’ e confirme a solicitação do Windows. Se necessário, fixe pelo menu Iniciar e depois clique em ‘Já fixei · verificar’.";
-                verifyButton.Text = "Já fixei · verificar";
-            }
+            message.Text = manualConfirmation
+                ? "Ainda não encontrei o Dock fixado. No menu Iniciar, clique com o botão direito em Firawynix Dock e escolha ‘Fixar na barra de tarefas’. Depois verifique novamente."
+                : "Para usar o Dock, fixe-o pelo menu Iniciar: clique com o botão direito em Firawynix Dock e escolha ‘Fixar na barra de tarefas’. Você também pode solicitar a fixação ao Windows.";
+            verifyButton.Text = "Já fixei · verificar";
         }
         finally
         {
@@ -105,7 +98,7 @@ internal sealed class PinGateForm : Form
             message.Text = pinned == false
                 ? "A fixação não foi confirmada. Fixe o Dock para abrir o painel."
                 : "O pedido automático não está disponível neste Windows. Fixe o Dock pelo menu Iniciar e confirme abaixo.";
-            if (pinned is null) verifyButton.Text = "Já fixei · continuar";
+            verifyButton.Text = "Já fixei · verificar";
         }
         finally
         {
