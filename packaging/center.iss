@@ -5,7 +5,7 @@
 #endif
 
 #define DockName "Firawynix Dock"
-#define DockVersion "1.1.1"
+#define DockVersion "1.1.3"
 #define DockAppId "{{887A8A7A-D695-43E4-8B76-DEA0E1F67EA2}"
 
 #if CenterArch == "x64"
@@ -23,7 +23,7 @@ AppId={#DockAppId}
 AppName={#DockName}
 AppVersion={#DockVersion}
 AppVerName={#DockName} {#DockVersion}
-VersionInfoVersion=1.1.1.0
+VersionInfoVersion=1.1.3.0
 AppPublisher=Firawynix
 AppPublisherURL=https://lab.firawynix.com.br/dock/
 AppSupportURL=https://lab.firawynix.com.br/dock/

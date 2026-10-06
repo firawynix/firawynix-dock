@@ -1,5 +1,7 @@
 # Atualizar Firawynix Dock no Center para 1.1.1
 
+> Histórico. Os arquivos em `dist/center/` agora são da versão 1.1.3. Para a publicação atual, siga `CENTER-ATUALIZACAO-1.1.3.md` e seus novos hashes.
+
 Siga o caso **A. Atualizar um produto que já existe** em `C:\Users\Hugo\firawynix-portfolio\docs\CENTER-PUBLICAR-PELO-PAINEL.md`. O item atual é `firawynix-dock`; a versão de catálogo consultada em 05/10/2026 é `1.1.0`. A versão `1.1.1` corrige a verificação da fixação na barra de tarefas e permite ocultar sites e programas não instalados separadamente.
 
 | Linha do painel | Arquivo | SHA-256 |
